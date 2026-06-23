@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Hunter Game</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#667eea,#764ba2);
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.game-container{
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    width:600px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+}
+
+h1{
+    color:#333;
+    margin-bottom:15px;
+}
+
+.info{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:20px;
+    font-size:20px;
+    font-weight:bold;
+}
+
+.target{
+    font-size:28px;
+    margin-bottom:20px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:15px;
+}
+
+.box{
+    height:100px;
+    border-radius:10px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.box:hover{
+    transform:scale(1.08);
+}
+
+button{
+    padding:12px 25px;
+#message{
+    font-weight:bold;
+}
+</style>
+<body>
+
+
+    <div class="target">
+        Find: <span id="targetColor">RED</span>
+
+</div>
+<script>
+"red","blue","green","yellow",
+"purple","orange","pink","brown",
+];
+
+let targetColor = "";
+let score = 0;
+let timeLeft = 30;
+let timer;
+
+
+function generateBoxes(){
+    grid.innerHTML = "";
+
+
+        let random = colors[Math.floor(Math.random()*colors.length)];
+        if(!selected.includes(random)){
+        }
+    }
+
+
+    document.getElementById("targetColor").innerText =
+
+    selected.forEach(color=>{
+        const box = document.createElement("div");
+        box.classList.add("box");
+        box.style.background = color;
+
+        box.addEventListener("click",()=>{
+            if(timeLeft <= 0) return;
+
+            if(color === targetColor){
+                score += 10;
+                document.getElementById("message").innerHTML =
+                "✅ Correct!";
+            }else{
+                score -= 5;
+                document.getElementById("message").innerHTML =
+                "❌ Wrong!";
+            }
+
+            document.getElementById("score").innerText = score;
+            generateBoxes();
+        });
+
+        grid.appendChild(box);
+    });
+}
+
+function startGame(){
+
+    clearInterval(timer);
+
+    score = 0;
+    timeLeft = 30;
+
+    document.getElementById("score").innerText = score;
+    document.getElementById("time").innerText = timeLeft;
+    document.getElementById("message").innerText = "";
+
+    generateBoxes();
+
+    timer = setInterval(()=>{
+        timeLeft--;
+        document.getElementById("time").innerText = timeLeft;
+
+        if(timeLeft <= 0){
+            clearInterval(timer);
+            document.getElementById("message").innerHTML =
+            `🏆 Game Over! Final Score: ${score}`;
+        }
+    },1000);
+}
+
+generateBoxes();
+</script>
+
+</body>
+</html>        targetColor.toUpperCase();
+    targetColor = selected[Math.floor(Math.random()*selected.length)];
+            selected.push(random);
+    while(selected.length < 6){
+    let selected = [];
+const grid = document.getElementById("grid");
+"cyan","lime","gold","magenta"
+const colors = [
+
+    <div id="message"></div>
+
+    <button onclick="startGame()">Start Game</button>
+    </div>
+    <div class="grid" id="grid"></div>
+
+    </div>
+
+        <span>Score: <span id="score">0</span></span>
+        <span>Time: <span id="time">30</span>s</span>
+    <div class="info">
+<div class="game-container">
+    <h1>🎯 Color Hunter</h1>
+</head>
+    margin-top:15px;
+    font-size:20px;
+    background:#4f63d8;
+
+}
+    border:none;
+button:hover{
+
+    font-size:18px;
+}
+    cursor:pointer;
+    border-radius:8px;
+    color:white;
+    background:#667eea;
+
