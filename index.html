@@ -25,7 +25,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            width: 600px;
+            width: 450px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
@@ -34,53 +34,47 @@
             color: #333;
             margin-bottom: 15px;
         }
-
         .info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 20px;
-            font-size: 20px;
             font-weight: bold;
-        }
+            color: #555;
 
         .target {
-            font-size: 28px;
             margin-bottom: 20px;
             font-weight: bold;
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
+            margin-bottom: 20px;
         }
 
         .box {
-            height: 100px;
             border-radius: 10px;
             cursor: pointer;
-            transition: 0.3s;
+            transition: 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
         .box:hover {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
-
         button {
             padding: 12px 25px;
             margin-top: 15px;
             font-size: 18px;
             background: #667eea;
             color: white;
-            border: none;
             border-radius: 8px;
             cursor: pointer;
+            font-weight: bold;
             transition: 0.2s;
+            width: 100%;
         }
-
         button:hover {
             background: #4f63d8;
-        }
 
         #message {
             font-weight: bold;
@@ -101,98 +95,115 @@
         </div>
 
         <div class="target">
-            Find: <span id="targetColor">RED</span>
         </div>
 
+        <div class="grid" id="grid"></div>
 
-        // चुने गए कलर्स में से एक को टारगेट कलर बनाना
+        <div id="message"></div>
+
+        <button onclick="startGame()">Start Game</button>
+    </div>
+
+<script>
+    // उपलब्ध रंगों की लिस्ट
+    const colors = [
+        "red", "blue", "green", "yellow",
+        "purple", "orange", "pink", "brown",
+        "cyan", "lime", "gold", "magenta"
+    ];
+
+    const grid = document.getElementById("grid");
+    let targetColor = "";
+    let score = 0;
+    let timeLeft = 30;
+    let timer = null;
+    let gameActive = false;
+
+    function generateBoxes() {
+        grid.innerHTML = "";
+        let selected = [];
+
+        // 1. हमेशा 6 अलग-अलग रैंडम कलर्स चुनना
+        while (selected.length < 6) {
+            let random = colors[Math.floor(Math.random() * colors.length)];
+            if (!selected.includes(random)) {
+                selected.push(random);
+            }
+        }
+
+        // 2. इन 6 में से किसी एक को टारगेट कलर बनाना
+        targetColor = selected[Math.floor(Math.random() * selected.length)];
+        document.getElementById("targetColor").innerText = targetColor.toUpperCase();
+
+        // 3. ग्रिड में डिब्बे (Boxes) तैयार करना
+        selected.forEach(color => {
             const box = document.createElement("div");
-            box.addEventListener("click", () => {
-                if (timeLeft <= 0) return;
+            box.classList.add("box");
+            box.style.background = color;
 
+            // बॉक्स पर क्लिक करने का लॉजिक
+            box.addEventListener("click", () => {
+                if (!gameActive || timeLeft <= 0) return;
+
+                if (color === targetColor) {
+                    score += 10;
+                    document.getElementById("message").innerHTML = "✅ Correct!";
                     document.getElementById("message").style.color = "green";
+                } else {
+                    score -= 5;
+                    document.getElementById("message").innerHTML = "❌ Wrong!";
                     document.getElementById("message").style.color = "red";
                 }
 
+                document.getElementById("score").innerText = score;
+                generateBoxes(); // सही या गलत के बाद नए बॉक्स जनरेट करना
             });
 
             grid.appendChild(box);
         });
     }
+
     function startGame() {
         clearInterval(timer);
         score = 0;
         timeLeft = 30;
+        gameActive = true;
 
         document.getElementById("score").innerText = score;
         document.getElementById("time").innerText = timeLeft;
-        document.getElementById("message").innerText = "";
+        document.getElementById("message").innerText = "Game Started! Hunt the color!";
+        document.getElementById("message").style.color = "#333";
 
         generateBoxes();
 
+        // 1 सेकंड का टाइमर चालू करना
         timer = setInterval(() => {
             timeLeft--;
             document.getElementById("time").innerText = timeLeft;
 
             if (timeLeft <= 0) {
                 clearInterval(timer);
+                gameActive = false;
                 document.getElementById("message").innerHTML = `🏆 Game Over! Final Score: ${score}`;
-                document.getElementById("message").style.color = "#333";
+                document.getElementById("message").style.color = "#764ba2";
             }
         }, 1000);
     }
 
-    // पेज लोड होने पर पहली बार ग्रिड दिखाने के लिए
+    // जब पहली बार पेज खुले, तो खाली बॉक्स न दिखें इसलिए शुरुआती ग्रिड लोड करना
     generateBoxes();
 </script>
 
 </body>
-</html>
-                document.getElementById("score").innerText = score;
-                generateBoxes();
-                } else {
-                    score -= 5;
-                    document.getElementById("message").innerHTML = "❌ Wrong!";
-                    score += 10;
-                    document.getElementById("message").innerHTML = "✅ Correct!";
-                if (color === targetColor) {
-            box.classList.add("box");
-            box.style.background = color;
-
-        document.getElementById("targetColor").innerText = targetColor.toUpperCase();
-        document.getElementById("targetColor").style.color = targetColor;
-
-        // ग्रिड में बॉक्स बनाना
-        selected.forEach(color => {
-        targetColor = selected[Math.floor(Math.random() * selected.length)];
-
-    function generateBoxes() {
-        let selected = [];
-        // 6 अलग-अलग रैंडम कलर्स चुनना
-
-        while (selected.length < 6) {
-            let random = colors[Math.floor(Math.random() * colors.length)];
-            }
+</html>            Find: <span id="targetColor">-</span>
         }
-            if (!selected.includes(random)) {
-                selected.push(random);
 
-        grid.innerHTML = "";
-    let timeLeft = 30;
-    let timer = null;
-        <button onclick="startGame()">Start Game</button>
-    let targetColor = "";
-    let score = 0;
+            border: none;
 
-    const grid = document.getElementById("grid");
-<script>
-    const colors = [
-        "cyan", "lime", "gold", "magenta"
-    ];
-        "red", "blue", "green", "yellow",
-        "purple", "orange", "pink", "brown",
-    </div>
-
-        <div class="grid" id="grid"></div>
-        <div id="message"></div>
+            height: 100px;
+            grid-template-columns: repeat(3, 1fr);
+            font-size: 28px;
+        }
+            font-size: 20px;
+            margin-bottom: 20px;
 
