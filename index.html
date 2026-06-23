@@ -1,196 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Color Hunter Game</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Hunter Game</title>
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
-}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-    background:linear-gradient(135deg,#667eea,#764ba2);
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-.game-container{
-    background:white;
-    padding:30px;
-    border-radius:15px;
-    width:600px;
-    text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
-}
+        .game-container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
 
-h1{
-    color:#333;
-    margin-bottom:15px;
-}
+        h1 {
+            color: #333;
+            margin-bottom: 15px;
+        }
 
-.info{
-    display:flex;
-    justify-content:space-between;
-    margin-bottom:20px;
-    font-size:20px;
-    font-weight:bold;
-}
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
 
-.target{
-    font-size:28px;
-    margin-bottom:20px;
-}
+        .target {
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:15px;
-}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
 
-.box{
-    height:100px;
-    border-radius:10px;
-    cursor:pointer;
-    transition:0.3s;
-}
+        .box {
+            height: 100px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
 
-.box:hover{
-    transform:scale(1.08);
-}
+        .box:hover {
+            transform: scale(1.08);
+        }
 
-button{
-    padding:12px 25px;
-#message{
-    font-weight:bold;
-}
-</style>
+        button {
+            padding: 12px 25px;
+            margin-top: 15px;
+            font-size: 18px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #4f63d8;
+        }
+
+        #message {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 15px;
+            min-height: 30px;
+        }
+    </style>
+</head>
 <body>
 
+    <div class="game-container">
+        <h1>🎯 Color Hunter</h1>
+        
+        <div class="info">
+            <span>Score: <span id="score">0</span></span>
+            <span>Time: <span id="time">30</span>s</span>
+        </div>
 
-    <div class="target">
-        Find: <span id="targetColor">RED</span>
-
-</div>
-<script>
-"red","blue","green","yellow",
-"purple","orange","pink","brown",
-];
-
-let targetColor = "";
-let score = 0;
-let timeLeft = 30;
-let timer;
+        <div class="target">
+            Find: <span id="targetColor">RED</span>
+        </div>
 
 
-function generateBoxes(){
-    grid.innerHTML = "";
+        // चुने गए कलर्स में से एक को टारगेट कलर बनाना
+            const box = document.createElement("div");
+            box.addEventListener("click", () => {
+                if (timeLeft <= 0) return;
 
+                    document.getElementById("message").style.color = "green";
+                    document.getElementById("message").style.color = "red";
+                }
 
-        let random = colors[Math.floor(Math.random()*colors.length)];
-        if(!selected.includes(random)){
-        }
+            });
+
+            grid.appendChild(box);
+        });
+    }
+    function startGame() {
+        clearInterval(timer);
+        score = 0;
+        timeLeft = 30;
+
+        document.getElementById("score").innerText = score;
+        document.getElementById("time").innerText = timeLeft;
+        document.getElementById("message").innerText = "";
+
+        generateBoxes();
+
+        timer = setInterval(() => {
+            timeLeft--;
+            document.getElementById("time").innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                document.getElementById("message").innerHTML = `🏆 Game Over! Final Score: ${score}`;
+                document.getElementById("message").style.color = "#333";
+            }
+        }, 1000);
     }
 
-
-    document.getElementById("targetColor").innerText =
-
-    selected.forEach(color=>{
-        const box = document.createElement("div");
-        box.classList.add("box");
-        box.style.background = color;
-
-        box.addEventListener("click",()=>{
-            if(timeLeft <= 0) return;
-
-            if(color === targetColor){
-                score += 10;
-                document.getElementById("message").innerHTML =
-                "✅ Correct!";
-            }else{
-                score -= 5;
-                document.getElementById("message").innerHTML =
-                "❌ Wrong!";
-            }
-
-            document.getElementById("score").innerText = score;
-            generateBoxes();
-        });
-
-        grid.appendChild(box);
-    });
-}
-
-function startGame(){
-
-    clearInterval(timer);
-
-    score = 0;
-    timeLeft = 30;
-
-    document.getElementById("score").innerText = score;
-    document.getElementById("time").innerText = timeLeft;
-    document.getElementById("message").innerText = "";
-
+    // पेज लोड होने पर पहली बार ग्रिड दिखाने के लिए
     generateBoxes();
-
-    timer = setInterval(()=>{
-        timeLeft--;
-        document.getElementById("time").innerText = timeLeft;
-
-        if(timeLeft <= 0){
-            clearInterval(timer);
-            document.getElementById("message").innerHTML =
-            `🏆 Game Over! Final Score: ${score}`;
-        }
-    },1000);
-}
-
-generateBoxes();
 </script>
 
 </body>
-</html>        targetColor.toUpperCase();
-    targetColor = selected[Math.floor(Math.random()*selected.length)];
-            selected.push(random);
-    while(selected.length < 6){
-    let selected = [];
-const grid = document.getElementById("grid");
-"cyan","lime","gold","magenta"
-const colors = [
+</html>
+                document.getElementById("score").innerText = score;
+                generateBoxes();
+                } else {
+                    score -= 5;
+                    document.getElementById("message").innerHTML = "❌ Wrong!";
+                    score += 10;
+                    document.getElementById("message").innerHTML = "✅ Correct!";
+                if (color === targetColor) {
+            box.classList.add("box");
+            box.style.background = color;
 
-    <div id="message"></div>
+        document.getElementById("targetColor").innerText = targetColor.toUpperCase();
+        document.getElementById("targetColor").style.color = targetColor;
 
-    <button onclick="startGame()">Start Game</button>
+        // ग्रिड में बॉक्स बनाना
+        selected.forEach(color => {
+        targetColor = selected[Math.floor(Math.random() * selected.length)];
+
+    function generateBoxes() {
+        let selected = [];
+        // 6 अलग-अलग रैंडम कलर्स चुनना
+
+        while (selected.length < 6) {
+            let random = colors[Math.floor(Math.random() * colors.length)];
+            }
+        }
+            if (!selected.includes(random)) {
+                selected.push(random);
+
+        grid.innerHTML = "";
+    let timeLeft = 30;
+    let timer = null;
+        <button onclick="startGame()">Start Game</button>
+    let targetColor = "";
+    let score = 0;
+
+    const grid = document.getElementById("grid");
+<script>
+    const colors = [
+        "cyan", "lime", "gold", "magenta"
+    ];
+        "red", "blue", "green", "yellow",
+        "purple", "orange", "pink", "brown",
     </div>
-    <div class="grid" id="grid"></div>
 
-    </div>
-
-        <span>Score: <span id="score">0</span></span>
-        <span>Time: <span id="time">30</span>s</span>
-    <div class="info">
-<div class="game-container">
-    <h1>🎯 Color Hunter</h1>
-</head>
-    margin-top:15px;
-    font-size:20px;
-    background:#4f63d8;
-
-}
-    border:none;
-button:hover{
-
-    font-size:18px;
-}
-    cursor:pointer;
-    border-radius:8px;
-    color:white;
-    background:#667eea;
+        <div class="grid" id="grid"></div>
+        <div id="message"></div>
 
